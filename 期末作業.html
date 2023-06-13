@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>數學問題</title>
+  <style>
+    body {
+      background-image: url('https://example.com/cat-emoji.png');
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      background-repeat: repeat;
+    }
+    .center-content {
+      text-align: center;
+    }
+    h2 {
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    button:after {
+      content: "🐱";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: rgba(255, 255, 255, 0.3);
+      transform: scale(0);
+      transition: transform 0.3s;
+      text-align: center;
+      line-height: 50px;
+    }
+    button:active {
+      transform: translateY(3px);
+    }
+    button:active:after {
+      transform: scale(1);
+    }
+    input[type="text"], input[type="password"] {
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    #confetti p {
+      font-size: 2em;
+      color: #F00;
+      animation: blink-animation 1s steps(5, start) infinite;
+      -webkit-animation: blink-animation 1s steps(5, start) infinite;
+    }
+    @keyframes blink-animation {
+      to {
+        visibility: hidden;
+      }
+    }
+    @-webkit-keyframes blink-animation {
+      to {
+        visibility: hidden;
+      }
+    }
+    .shake {
+      animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+    @keyframes shake {
+      10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+      }
+      
+      20%, 80% {
+        transform: translate3d(2px, 0, 0);
+      }
+
+      30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+      }
+
+      40%, 60% {
+        transform: translate3d(4px, 0, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="login" class="center-content">
+    <h2>資工二甲 41018111 陳政霖</h2>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="用戶名" required>
+      <input type="password" id="password" placeholder="密碼" required>
+      <button id="login-button">登入</button>
+    </form>
+  </div>
+
+  <div id="quiz" class="center-content" style="display: none;">
+    <h2>這道數學題目的答案是什麼?</h2>
+    <p id="question"></p>
+    <input type="text" id="answer">
+    <button id="submit">提交答案</button>
+  </div>
+
+  <div id="confetti" style="display: none;">
+    <p>🎉 恭喜你答對了！🎉</p>
+  </div>
+  
+  <div class="center-content">
+    <a href="https://www.csu.edu.tw/UIPWeb/wSite/mp?mp=10001">正修科技大學</a>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function() {
+      var correctAnswer;
+
+      setInterval(function() {
+        $('h2').css('color', getRandomColor());
+      }, 1000);
+
+      function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++ ) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      $("#login-form").submit(function(e) {
+        e.preventDefault();
+        $("#login").hide();
+        $("#quiz").show();
+        generateQuestion();
+      });
+
+      $("#submit").click(function(e) {
+        e.preventDefault();
+        var userAnswer = $("#answer").val();
+        if (parseInt(userAnswer) === correctAnswer) {
+          $("#quiz").hide();
+          $("#confetti").show();
+        } else {
+          $("#question").text("💀💀💀💀💀");
+          $('body').addClass("shake");
+          setTimeout(function(){ 
+            $('body').removeClass("shake"); 
+            generateQuestion();
+          }, 820);
+        }
+      });
+
+      function generateQuestion() {
+        var num1 = Math.floor(Math.random() * 10) + 1;
+        var num2 = Math.floor(Math.random() * 10) + 1;
+        correctAnswer = num1 * num2;
+        $("#question").text(num1 + " * " + num2 + " = ?");
+        $("#answer").val("");
+      }
+    });
+  </script>
+</body>
+</html>
